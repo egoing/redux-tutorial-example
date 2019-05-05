@@ -49,17 +49,28 @@ function control(){
     `;
 }
 function article(){
+    var state = store.getState();
+    var i = 0;
+    var aTitle, aDesc;
+    while(i < state.contents.length){
+        if(state.contents[i].id === state.selcted_id) {
+            aTitle = state.contents[i].title;
+            aDesc = state.contents[i].desc;
+            break;
+        }
+        i = i + 1;
+    }
     document.querySelector('#content').innerHTML = `
     <article>
-        <h2>HTML</h2>
-        HTML is ...
+        <h2>${aTitle}</h2>
+        ${aDesc}
     </article>
     `
 }
 function reducer(state, action){
     if(state === undefined){
         return {
-            selcted_id:null,
+            selcted_id:2,
             contents:[
                 {id:1,title:'HTML',desc:'HTML is ..'},
                 {id:2,title:'CSS', desc:'CSS is ..'}
@@ -74,6 +85,7 @@ function reducer(state, action){
     return newState;
 }
 var store = Redux.createStore(reducer);
+store.subscribe(article);
 subject();
 TOC();
 control();
